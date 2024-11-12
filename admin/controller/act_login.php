@@ -12,6 +12,7 @@ if (mysqli_num_rows($queryLogin) > 0) {
         $_SESSION['name'] = $rowUser['nama_lengkap'];
         $_SESSION['id'] = $rowUser['id'];
         $_SESSION['level'] = $rowUser['id_level'];
+        $_SESSION['jurusan'] = $rowUser['id_jurusan'];
         header('location: ../index.php?login=success');
     } else {
         header('location: ../login.php?login=failed');

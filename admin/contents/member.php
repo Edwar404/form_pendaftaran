@@ -1,5 +1,5 @@
 <?php
-$user = mysqli_query($connection, 'SELECT users.*, levels.nama_level FROM users LEFT JOIN levels ON levels.id = users.id_level ORDER BY id DESC');
+$user = mysqli_query($connection, 'SELECT users.*, levels.nama_level, jurusan.nama_jurusan FROM users LEFT JOIN levels ON levels.id = users.id_level LEFT JOIN jurusan ON users.id_jurusan = jurusan.id ORDER BY id DESC');
 ?>
 
 <div class="container table-anggota">
@@ -18,6 +18,7 @@ $user = mysqli_query($connection, 'SELECT users.*, levels.nama_level FROM users 
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Level</th>
+                            <th>Jurusan</th>
                             <th>Settings</th>
                         </tr>
                     </thead>
@@ -32,6 +33,11 @@ $user = mysqli_query($connection, 'SELECT users.*, levels.nama_level FROM users 
                                 <td><?php echo $rowUser['nama_lengkap'] ?></td>
                                 <td><?php echo $rowUser['email'] ?></td>
                                 <td><?php echo $rowUser['nama_level'] ?></td>
+                                <td><?php if ($rowUser['id_jurusan'] == 0) {
+                                    echo 'Admin';
+                                }else {
+                                    echo $rowUser['nama_jurusan'] ;
+                                }?></td>
                                 <td>
                                     <a href="?pg=tambah-member&delete=<?php echo $rowUser['id'] ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ini??')" class="btn btn-danger btn-sm"><i data-feather="trash-2"></i></a>
                                     <a href="?pg=tambah-member&edit=<?php echo $rowUser['id'] ?>" class="btn btn-success btn-sm"><i data-feather="edit"></i></a>

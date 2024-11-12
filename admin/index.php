@@ -1,15 +1,13 @@
 <?php
+session_start();
 ob_start();
 ob_clean();
-session_start();
 session_regenerate_id(true);
 include 'inc/connection.php';
 
 if (empty($_SESSION['name'])) {
     header('location: login.php?access=failed');
 }
-
-
 ?>
 <!DOCTYPE html>
 

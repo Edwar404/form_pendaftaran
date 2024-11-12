@@ -1,5 +1,26 @@
 <?php
-$queryStudent = mysqli_query($connection, "SELECT peserta_pelatihan.*, jurusan.nama_jurusan, gelombang.nama_gelombang FROM peserta_pelatihan LEFT JOIN jurusan ON peserta_pelatihan.id_jurusan = jurusan.id LEFT JOIN gelombang ON peserta_pelatihan.id_gelombang = gelombang.id ORDER BY id ASC")
+$userLevel = $_SESSION['level'];
+$userJurusan = $_SESSION['jurusan'];
+
+// var_dump($userLevel);
+// var_dump($userJurusan);
+// die;
+if ($userLevel == 3 || $userLevel == 4) {
+    // Jika Admin, tampilkan semua siswa
+    $queryStudent = mysqli_query($connection, "SELECT peserta_pelatihan.*, jurusan.nama_jurusan, gelombang.nama_gelombang FROM peserta_pelatihan LEFT JOIN jurusan ON peserta_pelatihan.id_jurusan = jurusan.id LEFT JOIN gelombang ON peserta_pelatihan.id_gelombang = gelombang.id ORDER BY id ASC");
+
+} else if ($userLevel == 2) {
+    // Jika PIC, tampilkan siswa sesuai jurusan PIC tersebut
+    $queryStudent = mysqli_query($connection, "SELECT peserta_pelatihan.*, jurusan.nama_jurusan, gelombang.nama_gelombang FROM peserta_pelatihan LEFT JOIN jurusan ON peserta_pelatihan.id_jurusan = jurusan.id LEFT JOIN gelombang ON peserta_pelatihan.id_gelombang = gelombang.id WHERE id_jurusan = '$userJurusan' ");
+    // $stmt = $pdo->prepare($query);
+    // $stmt->execute([$userJurusan]);
+} else {
+    // Jika level lain atau tidak diizinkan
+    echo "Anda tidak memiliki izin untuk mengakses data ini.";
+    exit;
+}
+
+// $queryStudent = mysqli_query($connection, "SELECT peserta_pelatihan.*, jurusan.nama_jurusan, gelombang.nama_gelombang FROM peserta_pelatihan LEFT JOIN jurusan ON peserta_pelatihan.id_jurusan = jurusan.id LEFT JOIN gelombang ON peserta_pelatihan.id_gelombang = gelombang.id ORDER BY id ASC");
 ?>
 
 <!-- <div class="container"> -->
@@ -29,7 +50,7 @@ $queryStudent = mysqli_query($connection, "SELECT peserta_pelatihan.*, jurusan.n
                             <th>Nomor Hp</th>
                             <th>Email</th>
                             <th>Aktivitas Saat Ini</th>
-                            <?php if (!isset($_SESSION['level']) == 3 && !isset($_SESSION['level']) == 4): ?>
+                            <?php if ($_SESSION['level'] == 3 || $_SESSION['level'] == 4): ?>
                                 <th>Aksi</th>
                             <?php endif ?>
                         </tr>
@@ -72,7 +93,7 @@ $queryStudent = mysqli_query($connection, "SELECT peserta_pelatihan.*, jurusan.n
                                         echo 'Kerja Malam / Freelance';
                                     } ?>
                                 </td>
-                                <?php if (!isset($_SESSION['level']) == 3 && !isset($_SESSION['level']) == 4): ?>
+                                <?php if ($_SESSION['level'] == 3 || $_SESSION['level'] == 4): ?>
                                     <td>
                                         <a id="edit-user" data-id="<?php echo $row['id'] ?>" href="?pg=update_status&edit=<?php echo $row['id'] ?>"
                                             class="btn btn-success btn-sm"><i data-feather="edit"></i>

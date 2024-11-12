@@ -1,6 +1,5 @@
 <?php
-$queryMember = mysqli_query($connection, "SELECT * FROM users")
-
+$queryMember = mysqli_query($connection, "SELECT * FROM users");
 ?>
 
 
@@ -82,7 +81,7 @@ $queryMember = mysqli_query($connection, "SELECT * FROM users")
         </li>
 
 
-        <?php if (!isset($_SESSION['level']) == 3 && !isset($_SESSION['level']) == 4): ?>
+        <?php if ($_SESSION['level'] == 3 || $_SESSION['level'] == 4): ?>
             <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -106,7 +105,7 @@ $queryMember = mysqli_query($connection, "SELECT * FROM users")
         <?php endif ?>
 
         <!-- Layouts -->
-        <?php if (!isset($_SESSION['level']) == 3 && !isset($_SESSION['level']) == 4): ?>
+        <?php if ($_SESSION['level'] == 3 || $_SESSION['level'] == 4): ?>
             <li class="menu-item">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>

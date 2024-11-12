@@ -1,14 +1,16 @@
 <?php
 
 $queryLevel = mysqli_query($connection, "SELECT * FROM levels");
+$queryJurusan = mysqli_query($connection, "SELECT * FROM jurusan");
 
 if (isset($_POST['tambah'])) {
     $nama_lengkap = $_POST['nama_lengkap'];
     $email = $_POST['email'];
     $nama_level = $_POST['nama_level'];
     $password = $_POST['password'];
+    $id_jurusan = $_POST['nama_jurusan'];
 
-    $insert = mysqli_query($connection, "INSERT INTO users (nama_lengkap, email, id_level, password) VALUES ('$nama_lengkap', '$email','$nama_level','$password')");
+    $insert = mysqli_query($connection, "INSERT INTO users (id_jurusan, nama_lengkap, email, id_level, password) VALUES ('$id_jurusan','$nama_lengkap', '$email','$nama_level','$password')");
     header('location:?pg=member&tambah=berhasil');
 }
 
@@ -21,8 +23,9 @@ if (isset($_POST['edit'])) {
     $email = $_POST['email'];
     $nama_level = $_POST['nama_level'];
     $password = ($_POST['password']) ? $_POST['password'] : $rowEdit['password'];
+    $id_jurusan = $_POST['nama_jurusan'];
 
-    $update = mysqli_query($connection, "UPDATE users SET nama_lengkap='$nama_lengkap', email='$email', password='$password', id_level='$nama_level' WHERE id='$id'");
+    $update = mysqli_query($connection, "UPDATE users SET id_jurusan='$id_jurusan', nama_lengkap='$nama_lengkap', email='$email', password='$password', id_level='$nama_level' WHERE id='$id'");
     header('location:?pg=member&edit=berhasil');
 }
 
@@ -57,6 +60,15 @@ if (isset($_GET['delete'])) {
                         <option value="">Pilih Level</option>
                         <?php while ($rowLevel = mysqli_fetch_assoc($queryLevel)) { ?>
                             <option <?php echo isset($_GET['edit']) ? ($rowLevel['id'] == $rowEdit['id_level'] ? 'selected' : '') : '' ?> value="<?php echo $rowLevel['id'] ?>"><?php echo $rowLevel['nama_level'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="">Pilih Jurusan</label>
+                    <select name="nama_jurusan" id="" required>
+                        <option value="0">Admin</option>
+                        <?php while ($rowJurusan = mysqli_fetch_assoc($queryJurusan)) { ?>
+                            <option <?php echo isset($_GET['edit']) ? ($rowJurusan['id'] == $rowEdit['id_jurusan'] ? 'selected' : '') : '' ?> value="<?php echo $rowJurusan['id'] ?>"><?php echo $rowJurusan['nama_jurusan'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
